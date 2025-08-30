@@ -27,19 +27,16 @@ class DataSchema(BaseModel):
 async def predict(data: DataSchema):
     data_dict = dict(data)
 
-    education_val = data_dict.pop("education")
-    education_ohe = [1 if education_val == "Not Graduate" else 0]
+    education = data_dict.pop("education")
+    education_binary = [1 if education == "Not Graduate" else 0]
 
-    self_emp_val = data_dict.pop("self_employed")
-    self_emp_ohe = [1 if self_emp_val == "Yes" else 0]
+    employed = data_dict.pop("self_employed")
+    employed_binary = [1 if employed == "Yes" else 0]
 
-    features = list(data_dict.values()) + education_ohe + self_emp_ohe
-
+    features = list(data_dict.values()) + education_binary + employed_binary
     scaled_data = scaler.transform([features])
-
-    pred = model.predict(scaled_data)[0]
-
-    return {"class": str(pred)}
+    prediction = model.predict(scaled_data)[0]
+    return {"class": str(prediction)}
 
 
 
