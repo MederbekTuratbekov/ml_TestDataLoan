@@ -36,7 +36,7 @@ async def predict(data: DataSchema):
     features = list(data_dict.values()) + education_binary + employed_binary
     scaled_data = scaler.transform([features])
     prediction = model.predict(scaled_data)[0]
-    return {"class": str(prediction)}
+    return {"Answer:": str(prediction)}
 
 
 
