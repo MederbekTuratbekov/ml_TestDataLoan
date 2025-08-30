@@ -4,7 +4,7 @@ import joblib
 from pydantic import BaseModel
 
 
-model = joblib.load('model_tree.pkl')
+model = joblib.load('model.pkl')
 scaler = joblib.load('scaler.pkl')
 
 exam_app = FastAPI()
@@ -23,7 +23,7 @@ class PropertySchema(BaseModel):
     bank_asset_value: int
 
 
-@exam_app.post('/predict')
+@exam_app.post('/predict/')
 async def predict(data: PropertySchema):
     data_dict = data.dict()
 
@@ -43,5 +43,5 @@ async def predict(data: PropertySchema):
 
 
 
-if name == 'main':
+if __name__ == 'main':
     uvicorn.run(exam_app, host='localhost', port=8000)
