@@ -25,7 +25,7 @@ class PropertySchema(BaseModel):
 
 @exam_app.post('/predict/')
 async def predict(data: PropertySchema):
-    data_dict = data.dict()
+    data_dict = dict(data)
 
     education_val = data_dict.pop("education")
     self_emp_val = data_dict.pop("self_employed")
