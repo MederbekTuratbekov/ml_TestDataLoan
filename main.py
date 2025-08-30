@@ -1,15 +1,15 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 import uvicorn
 import joblib
-from pydantic import BaseModel
 
 
 model = joblib.load('model.pkl')
 scaler = joblib.load('scaler.pkl')
 
-exam_app = FastAPI()
+app = FastAPI()
 
-class PropertySchema(BaseModel):
+class DataSchema(BaseModel):
     no_of_dependents: int
     education: str
     self_employed: str
@@ -23,14 +23,14 @@ class PropertySchema(BaseModel):
     bank_asset_value: int
 
 
-@exam_app.post('/predict/')
-async def predict(data: PropertySchema):
+@app.post('/predict')
+async def predict(data: DataSchema):
     data_dict = dict(data)
 
     education_val = data_dict.pop("education")
-    self_emp_val = data_dict.pop("self_employed")
-
     education_ohe = [1 if education_val == "Not Graduate" else 0]
+
+    self_emp_val = data_dict.pop("self_employed")
     self_emp_ohe = [1 if self_emp_val == "Yes" else 0]
 
     features = list(data_dict.values()) + education_ohe + self_emp_ohe
@@ -44,4 +44,4 @@ async def predict(data: PropertySchema):
 
 
 if __name__ == '__main__':
-    uvicorn.run(exam_app, host='127.0.0.1', port=8000)
+    uvicorn.run(app, host='127.0.0.1', port=8000)
