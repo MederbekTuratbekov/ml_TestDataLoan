@@ -1,4 +1,4 @@
-# Loan Approval Risk Scoring API 
+# Loan Approval Risk Scoring API  
 
 > Predicts loan approval probability based on applicant's financial profile,
 > helping lenders make faster and more consistent credit decisions.
